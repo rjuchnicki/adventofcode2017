@@ -2,7 +2,6 @@ f = open('input.txt', 'r')
 lines = [x.strip('\n') for x in f.readlines()]
 f.close()
 
-
 ret1 = 0  # Part 1
 ret2 = 0  # Part 2
 for l in lines:
