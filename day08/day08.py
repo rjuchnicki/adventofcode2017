@@ -9,7 +9,7 @@ d = {}
 for m in match:
     d[m.group(1)] = 0
 
-execution_max = 0
+exec_max = 0
 for m in match:
     comp = m.group(5)
     x = d[m.group(4)]
@@ -34,8 +34,28 @@ for m in match:
         elif m.group(2) == 'dec':
             d[m.group(1)] -= int(m.group(3))
 
-        if d[m.group(1)] > execution_max:
-            execution_max = d[m.group(1)]
+        if d[m.group(1)] > exec_max:
+            exec_max = d[m.group(1)]
 
 print('Part 1:', max(d.values()))
-print('Part 2:', execution_max)
+print('Part 2:', exec_max)
+
+
+# Cleaned up the solution after looking up how to access the comparison
+# operators.
+import operator as op
+from collections import defaultdict
+
+comps = {'>': op.gt, '<': op.lt, '>=': op.ge, '<=': op.le, '==': op.eq,
+         '!=': op.ne}
+ops = {'inc': 1, 'dec': -1}
+
+exec_max = 0
+d = defaultdict(int)
+for reg, op, inc, _, x, c, y in [i.split() for i in inst]:
+    if comps[c](d[x], int(y)):
+        d[reg] += int(inc) * ops[op]
+    exec_max = max(exec_max, d[reg])
+
+print('Part 1:', max(d.values()))
+print('Part 2:', exec_max)
